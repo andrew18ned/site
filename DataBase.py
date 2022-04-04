@@ -23,8 +23,8 @@ class DataBase:
     
     def addAccount(self, name, password):
         try: 
-            tm = math.floor(time.time())
-            self.__cursor.execute('INSERT INTO users VALUES (NULL, ?, ?)', (name, password))
+            # tm = math.floor(time.time())
+            self.__cursor.execute('INSERT INTO users VALUES (NULL, ?, ?, ?)', (name, password, 0))
             self.__db.commit()
         
         except sqlite3.Error as e:
@@ -32,3 +32,16 @@ class DataBase:
             return False
 
         return True
+
+    def getAccount(self):
+        try: 
+            self.__cursor.execute('SELECT name, password FROM posts WHERE name="andrew17" LIMIT 1')
+            result = self.__cursor.fetchall()
+            if result:
+                return result
+
+        except sqlite3.Error as e:
+            print('Помилка читання статті із БВ', e)
+            return False
+
+        return (False, False)

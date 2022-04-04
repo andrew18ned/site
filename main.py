@@ -1,6 +1,10 @@
 from flask import Flask, request, url_for, render_template, session, redirect, abort, flash, g
 from DataBase import DataBase
+import pyautogui 
 import sqlite3
+import time
+import os
+
 
 
 DATABASE = 'datas.db'
@@ -39,7 +43,7 @@ def index():
     db = get_db()
     dbase = DataBase(db)
 
-    return render_template('index.html', menu=dbase.getMenu())
+    return render_template('index.html', posts=dbase.getMenu())
 
 
 @app.teardown_appcontext
@@ -52,6 +56,7 @@ def close_db(error):
 def Log_in():
     db = get_db()
     dbase = DataBase(db)
+    dirname = 'users/'
 
     if request.method == 'POST': 
         session['userLogged'] = request.form['username']
@@ -60,12 +65,16 @@ def Log_in():
             if not result:
                 flash('Помилка додавання статті', category='error')
             else:
-                flash('Стаття додана успішно', category='success')
+                dirname += request.form['username']
+                os.mkdir(dirname)
+                flash('Вхід був успішно виконаний', category='success')
                 
+
                 return redirect(url_for('profile', username=session['userLogged']))
         
         else:
-            flash('Помилка додавання статті', category='error')
+            flash('Помилка входу. Ім*я має місити не менше 1 символа, а пароль 4', category='error')
+            
         
         
 
@@ -76,11 +85,13 @@ def Log_in():
 
 @app.route('/profile/<username>')
 def profile(username):
-  
+    db = get_db()
+    dbase = DataBase(db)
+
     if 'userLogged' not in session or session['userLogged'] != username:
         abort(401)
     session.clear()
-    return f'Профіль користувача: {username} <br><a href="/">Exit</a>'
+    return render_template('profile.html', name=f'{username}')
 
 
 

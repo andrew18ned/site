@@ -3,3 +3,21 @@ body {
     padding: 10px;
 }
 
+.main-page {
+    justify-content: center;
+    align-items: center;
+}
+
+.error {
+    text-align: center;
+    color: red;
+}
+
+.success {
+    text-align: center;
+    color: green;
+}
+
+.col-md-12 input {
+    max-width: 500px;
+}
