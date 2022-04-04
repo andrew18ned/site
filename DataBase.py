@@ -28,14 +28,14 @@ class DataBase:
             self.__db.commit()
         
         except sqlite3.Error as e:
-            print('Помилка додавання статті в БВ', e)
+            print('Помилка додавання акаунта в БВ', e)
             return False
 
         return True
 
     def getAccount(self):
         try: 
-            self.__cursor.execute('SELECT name, password FROM posts WHERE name="andrew17" LIMIT 1')
+            self.__cursor.execute('SELECT name, password FROM users WHERE name="andrew17" LIMIT 1')
             result = self.__cursor.fetchall()
             if result:
                 return result
@@ -45,3 +45,19 @@ class DataBase:
             return False
 
         return (False, False)
+
+
+    def singAccount(self, name, password):
+        try:
+            self.__cursor.execute(f'SELECT name, password FROM users WHERE name = "{name}" AND password = "{password}";')
+            if self.__cursor.fetchone() is None:
+                return False
+
+            else:
+                return True
+                # вхід був виконаний
+        
+        except Exception as e:
+            print('Помилка входу', e)
+        
+        # return (False, False)

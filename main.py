@@ -52,33 +52,21 @@ def close_db(error):
         g.link_db.close()
 
 
-@app.route('/log-in', methods=['POST', 'GET'])
+@app.route('/sing-in', methods=['POST', 'GET'])
 def Log_in():
     db = get_db()
     dbase = DataBase(db)
-    dirname = 'users/'
 
     if request.method == 'POST': 
         session['userLogged'] = request.form['username']
-        if len(request.form['username']) > 1 and len(request.form['userpassword']) >= 4:
-            result = dbase.addAccount(request.form['username'], request.form['userpassword'])
-            if not result:
-                flash('Помилка додавання статті', category='error')
-            else:
-                dirname += request.form['username']
-                os.mkdir(dirname)
-                flash('Вхід був успішно виконаний', category='success')
-                
-
-                return redirect(url_for('profile', username=session['userLogged']))
+        result = dbase.singAccount(request.form['username'], request.form['userpassword'])
+        if result:
+            return redirect(url_for('profile', username=session['userLogged'])) 
         
         else:
-            flash('Помилка входу. Ім*я має місити не менше 1 символа, а пароль 4', category='error')
-            
-        
-        
+            return redirect(url_for('regisration'))
 
-    return render_template('log_in.html', menu=dbase.getMenu())
+    return render_template('singin.html', menu=dbase.getMenu())
 
 
 
@@ -91,20 +79,41 @@ def profile(username):
     if 'userLogged' not in session or session['userLogged'] != username:
         abort(401)
     session.clear()
-    return render_template('profile.html', name=f'{username}')
+    return render_template('profile.html', name=f'{username}', title='profile')
 
 
 
 
 
-@app.route('/regisration')
+@app.route('/regisration', methods=['POST', 'GET'])
 def regisration():
-#     login, password = request.form['username'], request.form['userpassword']
-#     print(login, password)
-   
+    db = get_db()
+    dbase = DataBase(db)
+    dirname = 'users/'
+
+    try:
+        if request.method == 'POST':
+            session['userLogged'] = request.form['usernamereg']
+            if len(request.form['usernamereg']) > 1 and len(request.form['user-password']) >= 4:
+                result = dbase.addAccount(request.form['usernamereg'], request.form['user-password'])
+                if not result:
+                    flash('Помилка реєстації акаунта', category='error')
+                else:
+                    dirname += request.form['usernamereg']
+                    os.mkdir(dirname)
+                    flash('Вхід був успішно виконаний', category='success')
+                    
+
+                    return redirect(url_for('profile', username=session['userLogged']))
+                
+            else:
+                flash('Помилка реєстації. Ім*я має місити не менше 1 символа, а пароль 4', category='error')
+        
+    
+    except FileExistsError:
+        flash('Такий профіль вже існує!', category='error')
+
     return render_template('regisration.html')
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)

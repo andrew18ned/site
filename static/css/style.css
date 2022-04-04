@@ -21,3 +21,12 @@ body {
 .col-md-12 input {
     max-width: 500px;
 }
+
+.form-control {
+    max-width: 500px;
+}
+
+/* .amain {
+    float: right;
+    text-decoration-color: #fff;
+} */

@@ -6,11 +6,11 @@
 
 
 {% block body %}
-    {% for category, message in get_flashed_messages(True) %}
-        <div class="flash {{ category }}">{{ message }}</div>
-    {% endfor %}    
-
     <center>
+        {% for category, message in get_flashed_messages(True) %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}    
+        <h1>Вхід у профіль</h1>
         <form class="row g-3" method="post">
             <!-- <div class="col-md-6">
                 <label class="form-label">Email</label>
@@ -29,9 +29,12 @@
     
             <div class="col-12">
                 <!-- <input type="submit" value="Log in" /> -->
-                <button type="submit" class="btn btn-primary" value="">Log in</button>
+                <button type="submit" class="btn btn-primary" value="">Sing in</button>
             </div>
         </form>
     </center>
+    <form method="get" action="/">
+        <button type="submit" class="btn btn-primary">Головна</button>    
+    </form>
 
 {% endblock %}
