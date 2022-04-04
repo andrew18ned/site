@@ -11,6 +11,11 @@
 <body>
     {% block body %}
     {{ body }}
+    <ul>
+        {% for i in menu %}
+            <li>{{ i }}</li>
+        {% endfor %}
+    </ul>
     {% endblock %}
 </body>
 </html>

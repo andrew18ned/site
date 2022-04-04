@@ -1,95 +1,96 @@
-from flask import Flask, request, url_for, render_template, session, redirect, abort, flash
-from datetime import datetime
+from flask import Flask, request, url_for, render_template, session, redirect, abort, flash, g
+from DataBase import DataBase
 import sqlite3
-import os
+
+
+DATABASE = 'datas.db'
+DEBUG = True
+SECRET_KEY = 'asdfasagsdg^76&*^&@^&as:dfasdfasdFSWfasd34534dfgSD5653__6547^&(%^&*&*(^#^#()#%@(FDSGDA?AS"DE|'
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'asdfasagsdg^76&*^&@^&#%@(FDSGDA?AS"DE|'
+app.config.from_object(__name__)
 
-db = sqlite3.connect('dates.db', check_same_thread=False)
-sql = db.cursor()
-
-sql.execute("""CREATE TABLE IF NOT EXISTS users (
-    name TEXT,
-    password TEXT,
-    date_created TEXT
-)""")
-db.commit()
+def connect_db():
+    connection = sqlite3.connect(app.config['DATABASE'])
+    connection.row_factory = sqlite3.Row
+    
+    return connection
 
 
-# sql.execute(f"INSERT INTO users VALUES (?, ?, ?, ?)", ('test@gmail.com', 
-# 'andrew177', '2342342', datetime.utcnow()))
-# db.commit()
+def create_db():
+    db = connect_db()
+    with app.open_resource('commands.sql', mode='r') as f:
+        db.cursor().executescript(f.read())
+    db.commit()
+    db.close()
 
 
-# sql.execute("DELETE FROM users WHERE email='';")
-# db.commit()
+def get_db():
+    if not hasattr(g, 'link_db'):
+        g.link_db = connect_db()
+    
+    return g.link_db
 
-# for i in sql.execute('SELECT email, name, password, date_created FROM users'):
-#     print('emails-', i[0], 'names-', i[1], 
-#                 'pass-', i[2],  'time-', i[3][:16])
 
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    db = get_db()
+    dbase = DataBase(db)
+
+    return render_template('index.html', menu=dbase.getMenu())
+
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'link,db'):
+        g.link_db.close()
 
 
 @app.route('/log-in', methods=['POST', 'GET'])
 def Log_in():
-    if 'userLogged' in session:
-        return redirect(url_for('profile', username=session['userLogged']))
-    
-    elif request.method == 'POST': 
-        # якщо таке імя вже, то закинути на реєстацію
-        session['userLogged'] = request.form['username']
-        
-        
-        a, b = request.form['username'], request.form['userpassword']
-        print(a, b)
-        for i in sql.execute("SELECT `name` FROM users"):
-            print(i)
-       
+    db = get_db()
+    dbase = DataBase(db)
 
-        sql.execute(f'SELECT name, password FROM users WHERE name = "{a}" AND password = "{b}"')
-        if sql.fetchone() is None:
-            return redirect(url_for('regisration'))
+    if request.method == 'POST': 
+        session['userLogged'] = request.form['username']
+        if len(request.form['username']) > 1 and len(request.form['userpassword']) >= 4:
+            result = dbase.addAccount(request.form['username'], request.form['userpassword'])
+            if not result:
+                flash('Помилка додавання статті', category='error')
+            else:
+                flash('Стаття додана успішно', category='success')
+                
+                return redirect(url_for('profile', username=session['userLogged']))
         
         else:
-            return redirect(url_for('profile', username=session['userLogged']))
+            flash('Помилка додавання статті', category='error')
+        
+        
 
-    return render_template('log_in.html')
+    return render_template('log_in.html', menu=dbase.getMenu())
+
+
+
 
 @app.route('/profile/<username>')
 def profile(username):
-    """_summary_
-
-    Args:
-        username (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
+  
     if 'userLogged' not in session or session['userLogged'] != username:
         abort(401)
     session.clear()
     return f'Профіль користувача: {username} <br><a href="/">Exit</a>'
 
 
+
+
+
 @app.route('/regisration')
 def regisration():
-    login, password = request.form['username'], request.form['userpassword']
-    print(login, password)
-    # sql.execute(f"SELECT login FROM users WHERE login = '{login}'")    
-    # if sql.fetchone() is None:
-    #     sql.execute(f"INSERT INTO users VALUES (?, ?)", (login, user-password))
-    #     db.commit()
-    #     print('Ви зареєстували свій акаунт!')
-    
-    # else:
-    #     print('Такий акаунт вже існує!')
-
+#     login, password = request.form['username'], request.form['userpassword']
+#     print(login, password)
+   
     return render_template('regisration.html')
 
 
