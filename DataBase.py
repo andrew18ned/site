@@ -1,26 +1,37 @@
+from random import randint
 import time
 import math
 import sqlite3
+
 
 class DataBase:
     def __init__(self, db):
         self.__db = db
         self.__cursor = db.cursor()
 
-    def getMenu(self):
-        sql = 'SELECT * FROM users'
+    def showAccounts(self, find_user):
         try:
-            self.__cursor.execute(sql)
+            self.__cursor.execute(f'SELECT name, password, dick FROM users WHERE name = "{find_user}"')
             result = self.__cursor.fetchall()
             if result:
                 return result
         
-        except:
-            print('Помилка читтаня БД')
+        except Exception as e:
+            print('Помилка читтаня БД', e)
         
         return []
 
-    
+    def showallaccounts(self):
+        try:
+            self.__cursor.execute(f'SELECT name, dick FROM users ORDER BY dick DESC;')
+            result = self.__cursor.fetchall()
+            if result:
+                return result
+
+        except Exception as e:
+            print('Помилка читання всіх гравців', e)
+
+
     def addAccount(self, name, password):
         try: 
             # tm = math.floor(time.time())
@@ -33,18 +44,6 @@ class DataBase:
 
         return True
 
-    def getAccount(self):
-        try: 
-            self.__cursor.execute('SELECT name, password FROM users WHERE name="andrew17" LIMIT 1')
-            result = self.__cursor.fetchall()
-            if result:
-                return result
-
-        except sqlite3.Error as e:
-            print('Помилка читання статті із БВ', e)
-            return False
-
-        return (False, False)
 
 
     def singAccount(self, name, password):
@@ -61,3 +60,15 @@ class DataBase:
             print('Помилка входу', e)
         
         # return (False, False)
+
+    def play(self, name):
+        random_length = randint(-20, 20)
+        try:
+            for i in self.__cursor.execute(f"SELECT dick FROM users WHERE name = '{name}'"):
+                balance = i['dick']
+            self.__cursor.execute(f'UPDATE users SET dick = {random_length + balance} WHERE name = "{name}"')
+            self.__db.commit()
+
+
+        except Exception as e:
+            print('Помилка оновлення значення', e)

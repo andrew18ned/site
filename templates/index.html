@@ -11,6 +11,13 @@
         <a href="/sing-in">Sing in</a><br>
         <a href="/regisration">Rigister account</a>
     </center>
+    <h3>Top players:</h3>
+    <ul>
+        {% for line in posts %}
+            <li>{{line.name}} = {{line.dick}} cm</li>
+        {% endfor %}
+    </ul>
+
 
     
 {% endblock %}

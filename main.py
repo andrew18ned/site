@@ -10,6 +10,8 @@ import os
 DATABASE = 'datas.db'
 DEBUG = True
 SECRET_KEY = 'asdfasagsdg^76&*^&@^&as:dfasdfasdFSWfasd34534dfgSD5653__6547^&(%^&*&*(^#^#()#%@(FDSGDA?AS"DE|'
+temp = ''
+
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -43,7 +45,7 @@ def index():
     db = get_db()
     dbase = DataBase(db)
 
-    return render_template('index.html', posts=dbase.getMenu())
+    return render_template('index.html', posts=dbase.showallaccounts())
 
 
 @app.teardown_appcontext
@@ -66,7 +68,7 @@ def Log_in():
         else:
             return redirect(url_for('regisration'))
 
-    return render_template('singin.html', menu=dbase.getMenu())
+    return render_template('singin.html')
 
 
 
@@ -75,13 +77,25 @@ def Log_in():
 def profile(username):
     db = get_db()
     dbase = DataBase(db)
+    global temp
+    temp = f'{username}'
 
     if 'userLogged' not in session or session['userLogged'] != username:
         abort(401)
+    # if request.method == 'POST':
+    #     print('good')
+        # print(request.form['changeavatar'])
+
     session.clear()
-    return render_template('profile.html', name=f'{username}', title='profile')
+    return render_template('profile.html', name=temp, title='profile', posts=dbase.showAccounts(temp))
 
+@app.route('/profile/game')
+def game():
+    db = get_db()
+    dbase = DataBase(db)
+    global temp 
 
+    return (render_template('profile.html', name=temp, title='profile', posts=dbase.showAccounts(temp)), dbase.play(temp))
 
 
 
