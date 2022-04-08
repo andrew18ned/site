@@ -1,24 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Вирости пісюна 3.0
-{% endblock %}
 
 
-{% block body %}
+{% block content %}
+    {{ super() }}
+    
     <center>
-        <h1>Hello, world</h1>
-        <a href="/sing-in">Sing in</a><br>
-        <a href="/regisration">Rigister account</a>
+        <h1>Про гру...</h1>
+        <a href="/login">Увійти</a><br>
+        <a href="/register">Зареєструвати акаунт</a>
+ 
     </center>
+    <hr>
     <h3>Top players:</h3>
-    <ul>
-        {% for line in posts %}
-            <li>{{line.name}} = {{line.dick}} cm</li>
-        {% endfor %}
-    </ul>
-
-
+    <ol>
+        {% if posts==None %}
+            <h6>Ще немає користувачів</h6>
+        {% else %}
+            {% for line in posts %}
+                <li>{{line.name}} = {{line.dick}} cm</li>
+            {% endfor %}
+        {% endif %}
+    </ol>
 
     
 {% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ super() }}
+
+    {% for category, message in get_flashed_messages(True) %}
+        <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+
+    <center>
+        {{text}}
+        <a href="{{ url_for('profile') }}">Назад</a>
+    </center>
+
+{% endblock %}

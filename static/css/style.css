@@ -30,3 +30,8 @@ body {
     float: right;
     text-decoration-color: #fff;
 } */
+
+.profile-ava img {
+    max-width: 250px;
+    height: auto;
+}

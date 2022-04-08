@@ -1,6 +1,6 @@
 from random import randint
 from flask import flash
-import time
+from datetime import datetime
 import math
 import sqlite3
 
@@ -10,18 +10,6 @@ class DataBase:
         self.__db = db
         self.__cursor = db.cursor()
 
-    def showAccounts(self, find_user):
-        try:
-            self.__cursor.execute(f'SELECT name, password, dick FROM users \
-                WHERE name = "{find_user}"')
-            result = self.__cursor.fetchall()
-            if result:
-                return result
-        
-        except Exception as e:
-            print('Помилка читтаня БД', e)
-        
-        return []
 
     def showallaccounts(self):
         try:
@@ -34,37 +22,6 @@ class DataBase:
             print('Помилка читання всіх гравців', e)
 
 
-    def addAccount(self, name, password):
-        try: 
-            # tm = math.floor(time.time())
-            self.__cursor.execute('INSERT INTO users VALUES (NULL, ?, ?, ?, ?)', \
-                (name, password, 0, 5))
-            self.__db.commit()
-        
-        except sqlite3.Error as e:
-            print('Помилка додавання акаунта в БВ', e)
-            return False
-
-        return True
-
-
-
-    def singAccount(self, name, password):
-        try:
-            self.__cursor.execute(f'SELECT name, password FROM users WHERE name = "{name}" \
-                AND password = "{password}";')
-            if self.__cursor.fetchone() is None:
-                return False
-
-            else:
-                return True
-                # вхід був виконаний
-        
-        except Exception as e:
-            print('Помилка входу', e)
-        
-        # return (False, False)
-
     def play(self, name):
         random_length = randint(-20, 20)
         try:
@@ -72,10 +29,9 @@ class DataBase:
                                                 WHERE name = '{name}'"):
                 balance = i['dick']
                 update = i['countchoice'] 
-                if i['countchoice'] < 0:
+                if i['countchoice'] <= 0:
                     return False
                     
-                
                 else:
                     self.__cursor.execute(f'UPDATE users SET dick = {random_length + balance} WHERE name = "{name}"')
                     self.__cursor.execute(f'UPDATE users SET countchoice = {update-1} WHERE name = "{name}"')
@@ -86,7 +42,7 @@ class DataBase:
         except Exception as e:
             print('Помилка оновлення значення', e)
 
-    
+
     def countsUpdate(self):
         try:
             self.__cursor.execute('UPDATE users SET countchoice = 5')
@@ -95,3 +51,68 @@ class DataBase:
 
         except Exception as e:
             print('Помилка оновлення спроб', e)
+
+
+    def getUserByEmail(self, email):
+        try:
+            self.__cursor.execute(f'SELECT * FROM users WHERE email = "{email}" LIMIT 1')
+            result = self.__cursor.fetchone()
+            if not result:
+                print('User not found')
+                return False
+
+            return result
+        except sqlite3.Error as e:
+            print('Error get datas on DB', e)
+        
+        return False
+
+
+    def addUser(self, name, email, hashpassword):
+        try:
+            self.__cursor.execute(f'SELECT COUNT() as `count` FROM users WHERE email LIKE "{email}"')
+            result = self.__cursor.fetchone()
+
+            if result['count'] > 0:
+                print('Користувач з таким емейлом існує!')
+                return False
+
+            tm = datetime.utcnow().strftime('%B %d %Y - %H:%M:%S')
+            self.__cursor.execute('INSERT INTO users VALUES (NULL, ?, ?, ?, ?, ?, NULL, ?)', (name, email, hashpassword, 0, 5, tm))
+            self.__db.commit()
+
+        except sqlite3.Error as e:
+            print('Помилка додавання в БД', e)
+            return False
+        
+        return True
+
+
+    def getUser(self, user_id):
+        try:
+            self.__cursor.execute(f'SELECT * FROM users WHERE id = {user_id} LIMIT 1')
+            result = self.__cursor.fetchone()
+            if not result:
+                print('User not found')
+                return False
+
+            return result
+        except sqlite3.Error as e:
+            print('Error get datas on DB', e)
+        
+        return False
+
+
+    def updateUserAvatar(self, avatar, user_id):
+        if not avatar:
+            return False
+        
+        try: 
+            binary = sqlite3.Binary(avatar)
+            self.__cursor.execute(f'UPDATE users SET avatar = ? WHERE id = ?', (binary, user_id))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print('Помилка оновлення аватару в БВ', e)
+            return False
+
+        return True
