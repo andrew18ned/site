@@ -1,4 +1,5 @@
 from random import randint
+from flask import flash
 import time
 import math
 import sqlite3
@@ -11,7 +12,8 @@ class DataBase:
 
     def showAccounts(self, find_user):
         try:
-            self.__cursor.execute(f'SELECT name, password, dick FROM users WHERE name = "{find_user}"')
+            self.__cursor.execute(f'SELECT name, password, dick FROM users \
+                WHERE name = "{find_user}"')
             result = self.__cursor.fetchall()
             if result:
                 return result
@@ -35,7 +37,8 @@ class DataBase:
     def addAccount(self, name, password):
         try: 
             # tm = math.floor(time.time())
-            self.__cursor.execute('INSERT INTO users VALUES (NULL, ?, ?, ?)', (name, password, 0))
+            self.__cursor.execute('INSERT INTO users VALUES (NULL, ?, ?, ?, ?)', \
+                (name, password, 0, 5))
             self.__db.commit()
         
         except sqlite3.Error as e:
@@ -48,7 +51,8 @@ class DataBase:
 
     def singAccount(self, name, password):
         try:
-            self.__cursor.execute(f'SELECT name, password FROM users WHERE name = "{name}" AND password = "{password}";')
+            self.__cursor.execute(f'SELECT name, password FROM users WHERE name = "{name}" \
+                AND password = "{password}";')
             if self.__cursor.fetchone() is None:
                 return False
 
@@ -64,11 +68,30 @@ class DataBase:
     def play(self, name):
         random_length = randint(-20, 20)
         try:
-            for i in self.__cursor.execute(f"SELECT dick FROM users WHERE name = '{name}'"):
+            for i in self.__cursor.execute(f"SELECT dick, countchoice FROM users \
+                                                WHERE name = '{name}'"):
                 balance = i['dick']
-            self.__cursor.execute(f'UPDATE users SET dick = {random_length + balance} WHERE name = "{name}"')
-            self.__db.commit()
+                update = i['countchoice'] 
+                if i['countchoice'] < 0:
+                    return False
+                    
+                
+                else:
+                    self.__cursor.execute(f'UPDATE users SET dick = {random_length + balance} WHERE name = "{name}"')
+                    self.__cursor.execute(f'UPDATE users SET countchoice = {update-1} WHERE name = "{name}"')
+                    self.__db.commit()
+                    return True
 
 
         except Exception as e:
             print('Помилка оновлення значення', e)
+
+    
+    def countsUpdate(self):
+        try:
+            self.__cursor.execute('UPDATE users SET countchoice = 5')
+            self.__db.commit()
+
+
+        except Exception as e:
+            print('Помилка оновлення спроб', e)

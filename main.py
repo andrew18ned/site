@@ -2,6 +2,7 @@ from flask import Flask, request, url_for, render_template, session, redirect, a
 from DataBase import DataBase
 import pyautogui 
 import sqlite3
+import datetime
 import time
 import os
 
@@ -15,6 +16,8 @@ temp = ''
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+    
 
 def connect_db():
     connection = sqlite3.connect(app.config['DATABASE'])
@@ -38,12 +41,19 @@ def get_db():
     return g.link_db
 
 
+def count_update():
+    db = get_db()
+    dbase = DataBase(db)
+    if datetime.datetime.now().hour == 0:
+        dbase.countsUpdate()
+
 
 
 @app.route('/')
 def index():
     db = get_db()
     dbase = DataBase(db)
+    count_update()
 
     return render_template('index.html', posts=dbase.showallaccounts())
 
@@ -85,6 +95,10 @@ def profile(username):
     # if request.method == 'POST':
     #     print('good')
         # print(request.form['changeavatar'])
+    if dbase.play(temp):
+        pass
+    else:
+        return render_template('modal_window.html')
 
     session.clear()
     return render_template('profile.html', name=temp, title='profile', posts=dbase.showAccounts(temp))
@@ -94,8 +108,9 @@ def game():
     db = get_db()
     dbase = DataBase(db)
     global temp 
+    
 
-    return (render_template('profile.html', name=temp, title='profile', posts=dbase.showAccounts(temp)), dbase.play(temp))
+    return (render_template('profile.html', name=temp, title='profile', posts=dbase.showAccounts(temp)))
 
 
 

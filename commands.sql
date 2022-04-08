@@ -2,5 +2,6 @@ CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     password TEXT NOT NULL,
-    dick INTEGER NOT NULL
+    dick INTEGER NOT NULL,
+    countchoice INTEGER NOT NULL
 );
