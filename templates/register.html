@@ -16,12 +16,12 @@
                         {% endfor %}
                     </span>
                 {% else %}
-                    {{ field() }}
+                    {{ field(class="lol") }}
                 {% endif %}
             </p>
         {% endfor %}
 
-        <p>{{ form.submit() }}</p>
+        <p>{{ form.submit(class="register_button") }}</p>
     </form>
     <!-- <div class="form-registration">
         <center>

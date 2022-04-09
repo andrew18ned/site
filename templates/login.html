@@ -11,28 +11,29 @@
             <div class="flash {{ category }}">{{ message }}</div>
         {% endfor %}    
 
-
+        
         <form action="" method="post" class="row g-3">
             {{ form.hidden_tag() }}
             {% for field in form if field.name not in ['csrf_token', 'remember', 'submit'] -%}
-                <p>{{ field.label() }}
-                    {% if field.errors %}
-                        {{ field(class="invalid") }}
-                        <span class="invalid-feedback">
-                            {% for e in field.errors %}
-                                {{ e }}
-                            {% endfor %}
-                        </span>
-                    {% else %}
-                        {{ field() }}
-                    {% endif %}
-                </p>
+            <p>{{ field.label() }}
+                {% if field.errors %}
+                {{ field(class="invalid") }}
+                <span class="invalid-feedback">
+                    {% for e in field.errors %}
+                    {{ e }}
+                    {% endfor %}
+                </span>
+                {% else %}
+                {{ field() }}
+                {% endif %}
+            </p>
             {% endfor %}
             <p>{{ form.remember.label() }} {{ form.remember() }}</p>
             <p>{{ form.submit() }}</p>
             <hr align="left" width="300px">
             <p><a href="{{ url_for('register') }}">Зареєструватися</a></p>
         </form>
+       
         
         <!-- <form class="row g-3" method="post">
             <div class="col-md-6">

@@ -1,12 +1,19 @@
 body {
     margin: 0;
-    padding: 10px;
 }
 
-.main-page {
-    justify-content: center;
-    align-items: center;
+
+
+.navbar-collapse {
+    background: rgb(100, 100, 223);
+    max-width: 500px;
 }
+
+
+
+
+
+
 
 .error {
     text-align: center;
@@ -35,3 +42,21 @@ body {
     max-width: 250px;
     height: auto;
 }
+
+.lol {
+    background: blueviolet;
+}
+
+.register_button {
+    background: red;
+}
+
+
+.form-contect{
+    padding: 50px;
+    background: #ccc;
+    position: fixed; top: 50%; left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
