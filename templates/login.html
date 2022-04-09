@@ -1,60 +1,36 @@
 {% extends 'base.html' %}
 
 
-
-
 {% block content %}
     {{ super() }}
-    <center>
-
-        {% for category, message in get_flashed_messages(True) %}
-            <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}    
-
-        
-        <form action="" method="post" class="row g-3">
-            {{ form.hidden_tag() }}
-            {% for field in form if field.name not in ['csrf_token', 'remember', 'submit'] -%}
-            <p>{{ field.label() }}
-                {% if field.errors %}
-                {{ field(class="invalid") }}
-                <span class="invalid-feedback">
-                    {% for e in field.errors %}
-                    {{ e }}
-                    {% endfor %}
-                </span>
-                {% else %}
-                {{ field() }}
-                {% endif %}
-            </p>
-            {% endfor %}
-            <p>{{ form.remember.label() }} {{ form.remember() }}</p>
-            <p>{{ form.submit() }}</p>
-            <hr align="left" width="300px">
-            <p><a href="{{ url_for('register') }}">Зареєструватися</a></p>
-        </form>
-       
-        
-        <!-- <form class="row g-3" method="post">
-            <div class="col-md-6">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" name="useremail" required />
-            </div>
-            
-            <div class="col-md-12">
-                <label class="form-label">Name</label>
-                <input type="text" class="form-control" name="username" required />
-            </div>
-            
-            <div class="col-md-12">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" name="userpassword" required />
-            </div>
     
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary" value="">Sing in</button>
-            </div>
-        </form> -->
-    </center>
+    {% for category, message in get_flashed_messages(True) %}
+        <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}    
 
+    <div class="main">
+        <center>
+            <form action="" method="post" class="row g-3">
+                {{ form.hidden_tag() }}
+                {% for field in form if field.name not in ['csrf_token', 'remember', 'submit'] -%}
+                <p>{{ field.label(class="form-label") }}
+                    {% if field.errors %}
+                    {{ field(class="invalid") }}
+                    <span class="invalid-feedback">
+                        {% for e in field.errors %}
+                        {{ e }}
+                        {% endfor %}
+                    </span>
+                    {% else %}
+                    {{ field(class="form-control") }}
+                    {% endif %}
+                </p>
+                {% endfor %}
+                <p>{{ form.remember.label(class="form-check-label") }} {{ form.remember(class="form-check-input") }}</p>
+                <p>{{ form.submit(class="btn btn-primary") }}</p>
+                <hr align="left" width="300px">
+                <p><a href="{{ url_for('register') }}">Зареєструватися</a></p>
+            </form>
+        </center>
+    </div>
 {% endblock %}

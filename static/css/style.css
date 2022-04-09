@@ -1,8 +1,15 @@
-body {
+* {
     margin: 0;
+    padding: 0;
+    max-width: 100%;
 }
 
 
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
 .navbar-collapse {
     background: rgb(100, 100, 223);
@@ -10,7 +17,15 @@ body {
 }
 
 
+.main {
+    margin-top: 50px;
+    flex-grow: 1;
+}
 
+.top-user {
+    display: flex;
+    justify-content: center;
+}
 
 
 
@@ -33,30 +48,10 @@ body {
     max-width: 500px;
 }
 
-/* .amain {
-    float: right;
-    text-decoration-color: #fff;
-} */
 
 .profile-ava img {
     max-width: 250px;
     height: auto;
 }
 
-.lol {
-    background: blueviolet;
-}
 
-.register_button {
-    background: red;
-}
-
-
-.form-contect{
-    padding: 50px;
-    background: #ccc;
-    position: fixed; top: 50%; left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }

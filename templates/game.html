@@ -7,9 +7,11 @@
         <div class="flash {{ category }}">{{ message }}</div>
     {% endfor %}
 
-    <center>
-        {{text}}
-        <a href="{{ url_for('profile') }}">Назад</a>
-    </center>
+    <div class="main">
+        <center>
+            {{text}}
+            <a href="{{ url_for('profile') }}">Назад</a>
+        </center>
+    </div>
 
 {% endblock %}

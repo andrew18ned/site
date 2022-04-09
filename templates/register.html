@@ -3,53 +3,26 @@
 {% block content %}
     {{ super() }}
 
-
-    <form action="/register" method="post" class="form-contect">
-        {{ form.hidden_tag() }}
-        {% for field in form if field.name not in ['csrf_token', 'submit'] -%}
-            <p>{{ field.label() }}
-                {% if field.errors %}
-                    {{ field(class="invalid") }}
-                    <span class="invalid-feedback">
-                        {% for e in field.errors %}
-                            {{ e }}
-                        {% endfor %}
-                    </span>
-                {% else %}
-                    {{ field(class="lol") }}
-                {% endif %}
-            </p>
-        {% endfor %}
-
-        <p>{{ form.submit(class="register_button") }}</p>
-    </form>
-    <!-- <div class="form-registration">
+    <div class="main">
         <center>
-            {% for category, message in get_flashed_messages(True) %}
-                <div class="flash {{ category }}">{{ message }}</div>
-            {% endfor %}
-            <h1>Реєстрація акаунта</h1>
-            <form method="post">
-                <div class="row mb-3">
-                    <label class="col-sm-1 col-form-label">Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="usernamereg">
-                    </div>
-                </div>
-        
-                <div class="row mb-3">
-                    <label class="col-sm-1 col-form-label">Password</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" name="user-password">
-                    </div>
-                </div>
-        
-                <button type="submit" class="btn btn-primary">Create profile</button>
+            <form action="/register" method="post" class="form-contect">
+                {{ form.hidden_tag() }}
+                {% for field in form if field.name not in ['csrf_token', 'submit'] -%}
+                    <p>{{ field.label() }}
+                        {% if field.errors %}
+                            {{ field(class="invalid") }}
+                            <span class="invalid-feedback">
+                                {% for e in field.errors %}
+                                    {{ e }}
+                                {% endfor %}
+                            </span>
+                        {% else %}
+                            {{ field(class="form-control") }}
+                        {% endif %}
+                    </p>
+                {% endfor %}
+                <p>{{ form.submit(class="btn btn-primary") }}</p>
             </form>
         </center>
-        <form method="get" action="/">
-            <button type="submit" class="btn btn-primary">Головна</button>    
-        </form>
-    </div> -->
-    
+    </div>  
 {% endblock %}

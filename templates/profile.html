@@ -7,33 +7,34 @@
         <div class="flash {{ category }}">{{ message }}</div>
     {% endfor %}
 
+    <div class="main">
+        <table border="0" class="profile-table">
+            <tr>
+                <td>
+                    <div class="profile-ava"><img src="{{ url_for('userava') }}" alt="avatar"></div>
+                    <div class="profile-load">
+                        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+                            <p><input type="file" name="file"></p>
+                            <p><input type="submit" value="Завантажити"></p>
+                        </form>
+                    </div>
+                </td>
+                <td valagn="top" class="profile-panel">
+                    <p><a href="{{ url_for('logout') }}">Вийти із профіля</a></p>
+                    <ul class="profile-info">
+                        <li>Ім`я: {{ current_user.getName() }}</li>
+                        <li>Email: {{ current_user.getEmail() }}</li>
+                        <li>Пісюн: {{ current_user.getDick() }} cм</li>
+                        <li>Кількість спроб на сьогодні: {{ current_user.get_count_choice() }}</li>
+                        <li>Дата створення акаунта: {{ current_user.getTime() }}</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
     
-    <table border="0" class="profile-table">
-        <tr>
-            <td>
-                <div class="profile-ava"><img src="{{ url_for('userava') }}" alt="avatar"></div>
-                <div class="profile-load">
-                    <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-                        <p><input type="file" name="file"></p>
-                        <p><input type="submit" value="Завантажити"></p>
-                    </form>
-                </div>
-            </td>
-            <td valagn="top" class="profile-panel">
-                <p><a href="{{ url_for('logout') }}">Вийти із профіля</a></p>
-                <ul class="profile-info">
-                    <li>Ім`я: {{ current_user.getName() }}</li>
-                    <li>Email: {{ current_user.getEmail() }}</li>
-                    <li>Пісюн: {{ current_user.getDick() }} cм</li>
-                    <li>Кількість спроб на сьогодні: {{ current_user.get_count_choice() }}</li>
-                    <li>Дата створення акаунта: {{ current_user.getTime() }}</li>
-                </ul>
-            </td>
-        </tr>
-    </table>
-
-    <div class="game">
-        <a href="{{ url_for('game') }}">Гроємо гру..</a>
+        <div class="game">
+            <a href="{{ url_for('game') }}">Гроємо гру..</a>
+        </div>
     </div>
 
 {% endblock %}

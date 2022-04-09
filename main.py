@@ -133,6 +133,8 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
+    count_update()
+
     return render_template('profile.html', tile='Профіль')
 
 

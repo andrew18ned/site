@@ -5,19 +5,22 @@
 {% block content %}
     {{ super() }}
     
+    <div class="main">
+        <h1>Про гру...</h1> 
+        <hr>
+        <div class="top-user">
+            <ol>
+                <h3>Top players:</h3>
+                {% if posts==None %}
+                    <h6>Ще немає користувачів</h6>
+                {% else %}
+                    {% for line in posts %}
+                        <li>{{line.name}} = {{line.dick}} cm</li>
+                    {% endfor %}
+                {% endif %}
+            </ol>
+        </div>
+        
+    </div>
 
-    <h1>Про гру...</h1> 
-    <hr>
-    <h3>Top players:</h3>
-    <ol>
-        {% if posts==None %}
-            <h6>Ще немає користувачів</h6>
-        {% else %}
-            {% for line in posts %}
-                <li>{{line.name}} = {{line.dick}} cm</li>
-            {% endfor %}
-        {% endif %}
-    </ol>
-
-    
 {% endblock %}
