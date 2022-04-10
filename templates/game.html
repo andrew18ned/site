@@ -29,11 +29,14 @@
         <div class="flash {{ category }}">{{ message }}</div>
     {% endfor %}
 
-    <div class="main">
+    <div class="main-game">
         <center>
             {{text}}
             <a href="{{ url_for('profile') }}">Назад</a>
+            <div class="dick">
+                <img src="/static/images/dick.jpeg" alt="dick">
+            </div>
         </center>
     </div>
-
+        
 {% endblock %}
