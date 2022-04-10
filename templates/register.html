@@ -3,9 +3,9 @@
 {% block content %}
     {{ super() }}
 
-    <div class="main">
-        <center>
-            <form action="/register" method="post" class="form-contect">
+    <div class="main-reg">
+        <form action="/register" method="post" class="form-contect">
+            <center>
                 {{ form.hidden_tag() }}
                 {% for field in form if field.name not in ['csrf_token', 'submit'] -%}
                     <p>{{ field.label() }}
@@ -22,7 +22,7 @@
                     </p>
                 {% endfor %}
                 <p>{{ form.submit(class="btn btn-primary") }}</p>
-            </form>
-        </center>
+            </center>
+        </form>
     </div>  
 {% endblock %}

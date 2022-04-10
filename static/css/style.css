@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     max-width: 100%;
+    font-family: 'Nanum Gothic Coding', monospace;
 }
 
 
@@ -9,26 +10,63 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    background-image: url("/static/images/background.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 .navbar-collapse {
-    background: rgb(100, 100, 223);
-    max-width: 500px;
+    padding-right: 25px;
 }
 
 
 .main {
-    margin-top: 50px;
+    margin: 50px 200px 0;
     flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-reg {
+    margin: 50px 200px 0;
+    flex-grow: 1;
+    justify-content: space-between;
 }
 
 .top-user {
+    padding: 20px 10px 0;
+    width: 550px;
+    height: 600px;
     display: flex;
     justify-content: center;
+    background: #fff;
+    opacity: .5;
+    display: inline-block;
+    border-radius: 50px;
 }
 
+.about-game {
+    padding: 20px 10px 0;
+    width: 300px;
+    height: 600px;
+    background: #fff;
+    opacity: .5;
+    display: inline-block;
+    border-radius: 50px;
+    text-align: center;
+}
 
+/* .bg-secondary.bg-gradient */
 
+footer a {
+    text-decoration: none;
+}
+
+.navbar-brand {
+    padding: 20px;
+}
 
 .error {
     text-align: center;

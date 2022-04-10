@@ -6,11 +6,9 @@
     {{ super() }}
     
     <div class="main">
-        <h1>Про гру...</h1> 
-        <hr>
         <div class="top-user">
             <ol>
-                <h3>Top players:</h3>
+                <h1>Top players:</h1>
                 {% if posts==None %}
                     <h6>Ще немає користувачів</h6>
                 {% else %}
@@ -20,7 +18,11 @@
                 {% endif %}
             </ol>
         </div>
+
         
+        <div class="about-game">
+            <h3>Про гру...</h3> 
+        </div>
     </div>
 
 {% endblock %}
