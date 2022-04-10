@@ -2,9 +2,32 @@
 
 
 
+  
+{%- block mainmenu -%}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><h3>Вирости пісюна</h3></a>
+        </div>
+        <div class="navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">Головна</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Увійти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Зареструватися</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock mainmenu -%}
+
+
 {% block content %}
     {{ super() }}
-    
+
     <div class="main">
         <div class="top-user">
             <ol>
@@ -19,10 +42,14 @@
             </ol>
         </div>
 
-        
         <div class="about-game">
             <h3>Про гру...</h3> 
         </div>
+
+        <div class="play">
+            <a href="{{ url_for('game') }}"><h3>Play</h3></a>
+        </div>
     </div>
+    
 
 {% endblock %}

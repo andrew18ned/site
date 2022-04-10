@@ -79,6 +79,14 @@ def index():
     return render_template('index.html', posts=dbase.showallaccounts())
 
 
+@app.route('/indexreg')
+@login_required
+def indexreg():
+    count_update()
+
+    return render_template('indexreg.html', posts=dbase.showallaccounts())
+
+
 @app.teardown_appcontext
 def close_db(error):
     if hasattr(g, 'link,db'):
@@ -173,6 +181,7 @@ def upload():
 
 
 @app.route('/profile/game')
+@login_required
 def game():
     if not dbase.play(current_user.getName()):
         flash('Ви вичерпали всі спроби на сьогодні', category='error')
