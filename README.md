@@ -4,7 +4,7 @@
 ![img](https://github.com/andrew18ned/site/blob/main/site_grow.png)
 
 ## Used:
-* Fkask 
+* Flask 
 * SQLite3
 
 ## Run
